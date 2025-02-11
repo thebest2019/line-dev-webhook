@@ -32,7 +32,7 @@ app.post('/webhook', (req, res) => {
     });
 });
 
-app.post('message/send', async (req, res) => {
+app.post('/message/send', async (req, res) => {
     const messages = req.body.messages;
     const retryKey = uuidv4();
 
