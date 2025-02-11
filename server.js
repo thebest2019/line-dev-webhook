@@ -1,8 +1,14 @@
+const fs = require("fs");
+const https = require("https");
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 44301;
+
+const options = {
+    key: fs.readFileSync("C:/win-acme/certs/privkey.pem"),
+    cert: fs.readFileSync("C:/win-acme/certs/fullchain.pem"),
+};
 
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
@@ -23,6 +29,6 @@ app.post('/webhook', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Webhook API is running on http://localhost:${PORT}`);
+https.createServer(options, app).listen(443, () => {
+    console.log("Secure server running on https://webhook.algosme.com");
 });
