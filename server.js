@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const options = {
-    key: fs.readFileSync("C:/win-acme/certs/privkey.pem"),
-    cert: fs.readFileSync("C:/win-acme/certs/fullchain.pem"),
+    key: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-key.pem"),
+    cert: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-crt.pem"),
 };
 
 // Middleware to parse JSON requests
