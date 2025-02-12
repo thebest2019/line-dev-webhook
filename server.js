@@ -10,9 +10,9 @@ import profileRouter from './routes/profile.route.js';
 
 const app = express();
 
-const options = NODE_ENV === 'development' ? {} : {
-    key: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-key.pem") || undefined,
-    cert: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-crt.pem") || undefined,
+const options = {
+    key: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-key.pem"),
+    cert: fs.readFileSync("C:/win-acme/certs/webhook.algosme.com-crt.pem"),
 };
 
 // Middleware to parse JSON requests
