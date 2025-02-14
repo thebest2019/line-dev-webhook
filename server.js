@@ -36,7 +36,7 @@ app.use('/api/v1/webhook', webhookRouter);
 app.use('/api/v1/profile', profileRouter);
 
 app.get('/', (req, res) => {
-    res.send(`Webhook v. 1.0.0`);
+    res.send(`Webhook v. 1.0.0 - ${PORT}`);
 });
 
 // Start the server
