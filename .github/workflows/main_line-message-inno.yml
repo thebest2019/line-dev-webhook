@@ -1,36 +1,35 @@
-name: Build and deploy Node.js app to Azure Web App - line-message-inno
+name: Deploy Node.js to Azure Web App
 
 on:
   push:
     branches:
-      - main
+      - main  # Change if using a different branch
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4  # Check out the repository
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'  # Use Node.js 20
-
-      - name: Install dependencies
-        run: npm install
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     steps:
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --production  # Only install production dependencies
+
+      - name: Upload .env file to Azure
+        env:
+          ENV_CONTENT: ${{ secrets.ENV_PRODUCTION }}  # Read from GitHub Secrets
+        run: echo "$ENV_CONTENT" > .env.production
+
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'line-message-inno'  # Replace with your Azure Web App name
-          package: .  # Deploy the current directory
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A2665F6256F5432A9EF274696C0CA600 }}  # Use your publish profile secret
+          app-name: 'line-dev-webhook'  # Change to your Azure Web App name
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
